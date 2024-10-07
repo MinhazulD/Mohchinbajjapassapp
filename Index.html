@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Password Screen Lock</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .lock-screen {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        #time-display {
+            font-size: 24px;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #status-message {
+            margin-top: 15px;
+            font-size: 14px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="lock-screen">
+        <h2>Dynamic Password Screen Lock</h2>
+        <p id="time-display"></p>
+        <input type="password" id="password-input" placeholder="Enter dynamic password">
+        <button id="unlock-btn">Unlock</button>
+        <p id="status-message"></p>
+    </div>
+
+    <script>
+        // Function to get the current time and generate a dynamic password
+        function getDynamicPassword() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            // Example logic: Concatenate hours and minutes to generate the password
+            const dynamicPassword = hours.toString().padStart(2, '0') + minutes.toString().padStart(2, '0');
+            return dynamicPassword;
+        }
+
+        // Display the current time on the screen
+        function displayCurrentTime() {
+            const timeDisplay = document.getElementById('time-display');
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            timeDisplay.innerHTML = `Current Time: ${hours}:${minutes}`;
+        }
+
+        // Check if the entered password matches the dynamic password
+        function unlockScreen() {
+            const inputPassword = document.getElementById('password-input').value;
+            const statusMessage = document.getElementById('status-message');
+            const dynamicPassword = getDynamicPassword();
+
+            if (inputPassword === dynamicPassword) {
+                statusMessage.innerHTML = 'Unlocked Successfully!';
+                statusMessage.style.color = 'green';
+            } else {
+                statusMessage.innerHTML = 'Incorrect Password. Try Again!';
+                statusMessage.style.color = 'red';
+            }
+        }
+
+        // Update the current time every minute
+        setInterval(displayCurrentTime, 1000);
+
+        // Add event listener to the unlock button
+        document.getElementById('unlock-btn').addEventListener('click', unlockScreen);
+
+        // Initialize by displaying the time
+        displayCurrentTime();
+    </script>
+</body>
+</html>
